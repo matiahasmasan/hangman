@@ -6,7 +6,10 @@ let word = "";
 let guess = "";
 let alphabet = "IERLAOTNUCSĂMDPGBFȚȘZVHÂÎJXK"; // ordonate dupa frecventa
 const rows = data.trim().split("\n"); // newline
-const dictionarWords = dictionar.trim().split("\n").map(w => w.toUpperCase()); // capitalize dictionar words
+const dictionarWords = dictionar
+  .trim()
+  .split("\n")
+  .map((w) => w.toUpperCase()); // capitalize dictionar words
 
 for (let row of rows) {
   let index_alpha = 0; // index alphabet
@@ -15,8 +18,8 @@ for (let row of rows) {
   guess = maskedWord;
 
   // filter by length
-  let possibleWords = dictionarWords.filter(w => w.length === word.length);
-  possibleWords = possibleWords.filter(w => {
+  let possibleWords = dictionarWords.filter((w) => w.length === word.length);
+  possibleWords = possibleWords.filter((w) => {
     for (let i = 0; i < guess.length; i++) {
       if (guess[i] !== "*" && guess[i] !== w[i]) {
         return false; // if revealed letters dont match, filter out
@@ -29,7 +32,14 @@ for (let row of rows) {
     console.log(
       `Cuvant ${guess}, litera ${alphabet[index_alpha]} si incercari ${tries}`
     );
-
+    possibleWords = possibleWords.filter((w) => {
+      for (let i = 0; i < guess.length; i++) {
+        if (guess[i] !== "*" && guess[i] !== w[i]) {
+          return false; // if revealed letters dont match, filter out
+        }
+      }
+      return true;
+    });
     // daca mai am doar o posibila varianta de cuvant, acela este
     if (possibleWords.length === 1) {
       guess = possibleWords[0];
@@ -42,11 +52,11 @@ for (let row of rows) {
     if (guess.includes(alphabet[index_alpha])) {
       console.log(`Am deja aceasta litera ${alphabet[index_alpha]}`);
       index_alpha++; // Skip
-      continue; 
+      continue;
     }
 
-    // update possible words 
-    possibleWords = possibleWords.filter(w => {
+    // update possible words
+    possibleWords = possibleWords.filter((w) => {
       for (let i = 0; i < guess.length; i++) {
         if (guess[i] !== "*" && guess[i] !== w[i]) {
           return false; // if revealed letters dont match, filter out
@@ -54,7 +64,7 @@ for (let row of rows) {
       }
       return true;
     });
-    
+
     // letters frequency in possible words
     let found = false;
     for (let i = 0; i < possibleWords.length; i++) {
@@ -74,7 +84,8 @@ for (let row of rows) {
       if (guess[i] === "*") {
         if (word[i] === alphabet[index_alpha]) {
           tries++;
-          guess = guess.slice(0, i) + alphabet[index_alpha] + guess.slice(i + 1);
+          guess =
+            guess.slice(0, i) + alphabet[index_alpha] + guess.slice(i + 1);
           console.log(
             `Am adaugat litera: ${alphabet[index_alpha]}, dar creste incercarea ${tries}`
           );
