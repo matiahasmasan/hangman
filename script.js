@@ -19,14 +19,6 @@ for (let row of rows) {
 
   // filter by length
   let possibleWords = dictionarWords.filter((w) => w.length === word.length);
-  possibleWords = possibleWords.filter((w) => {
-    for (let i = 0; i < guess.length; i++) {
-      if (guess[i] !== "*" && guess[i] !== w[i]) {
-        return false; // if revealed letters dont match, filter out
-      }
-    }
-    return true;
-  });
 
   while (word !== guess) {
     console.log(
